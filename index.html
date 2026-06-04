@@ -3,389 +3,367 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Cas Veepee : comment l'intelligence artificielle répond aux défis d'une plateforme de ventes événementielles. Personnalisation, prédiction de la demande, optimisation des ventes." />
-<title>Cas Veepee · L'IA au service des ventes événementielles</title>
+<meta name="description" content="Cas Veepee. Comment l'intelligence artificielle orchestre la vente flash : personnaliser, prédire la demande, optimiser les ventes. Dossier data." />
+<title>Cas Veepee · L'IA et la vente flash</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --bg: #0a0e1a;
-    --bg-soft: #0f1524;
-    --card: #131a2c;
-    --card-hover: #18213a;
-    --line: #1e2841;
-    --txt: #eef2fb;
-    --txt-soft: #9aa6c4;
-    --txt-dim: #6b7799;
-    --pink: #ff2d78;
-    --pink-soft: #ff6aa3;
-    --violet: #7b5cff;
-    --cyan: #19d3e0;
-    --green: #2ee6a6;
-    --amber: #ffb020;
-    --grad: linear-gradient(120deg, #ff2d78 0%, #7b5cff 55%, #19d3e0 100%);
-    --radius: 20px;
-    --shadow: 0 24px 60px -20px rgba(0,0,0,.7);
+  :root{
+    --paper:#EEE7D7;
+    --paper-2:#E5DCC6;
+    --ink:#171109;
+    --ink-soft:#4b4234;
+    --ink-dim:#8a7f6b;
+    --pink:#FF0A52;
+    --blue:#1822C8;
+    --rule:#171109;
+    --maxw:1180px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--txt);
-    font-family: 'Inter', system-ui, sans-serif;
-    line-height: 1.65;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  ::selection{background:var(--pink);color:var(--paper);}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;
+    font-size:18px;
+    line-height:1.55;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
   }
-  .glow {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(700px 500px at 12% -5%, rgba(255,45,120,.18), transparent 60%),
-      radial-gradient(800px 600px at 90% 8%, rgba(123,92,255,.16), transparent 60%),
-      radial-gradient(700px 700px at 60% 100%, rgba(25,211,224,.10), transparent 60%);
+  /* grain + paper texture */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   }
-  .wrap { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-  h1, h2, h3 { font-family: 'Sora', sans-serif; line-height: 1.12; letter-spacing: -.02em; }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
 
-  /* NAV */
-  nav {
-    position: sticky; top: 0; z-index: 50;
-    backdrop-filter: blur(14px);
-    background: rgba(10,14,26,.72);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav-in { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-family: 'Sora'; font-weight: 700; font-size: 17px; }
-  .brand .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 16px var(--pink); }
-  .nav-links { display: flex; gap: 28px; font-size: 14px; }
-  .nav-links a { color: var(--txt-soft); text-decoration: none; transition: color .2s; }
-  .nav-links a:hover { color: var(--txt); }
-  @media (max-width: 720px){ .nav-links { display: none; } }
+  .display{font-family:'Fraunces',serif;font-weight:600;line-height:.98;letter-spacing:-.015em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  em,.it{font-style:italic;}
 
-  /* HERO */
-  header { padding: 90px 0 60px; text-align: center; }
-  .tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-    color: var(--pink-soft);
-    border: 1px solid rgba(255,45,120,.3);
-    background: rgba(255,45,120,.07);
-    padding: 7px 16px; border-radius: 999px; margin-bottom: 28px;
-  }
-  .tag .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 0 rgba(255,45,120,.6); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%{ box-shadow: 0 0 0 0 rgba(255,45,120,.5);} 70%{ box-shadow: 0 0 0 12px rgba(255,45,120,0);} 100%{ box-shadow: 0 0 0 0 rgba(255,45,120,0);} }
-  header h1 { font-size: clamp(38px, 6vw, 68px); font-weight: 800; }
-  header h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  header p.sub { max-width: 660px; margin: 26px auto 0; color: var(--txt-soft); font-size: clamp(16px, 2vw, 19px); }
-  .hero-cta { margin-top: 40px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 9px;
-    padding: 14px 26px; border-radius: 12px; font-weight: 600; font-size: 15px;
-    text-decoration: none; cursor: pointer; transition: transform .2s, box-shadow .2s; border: none;
-  }
-  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 14px 34px -12px rgba(255,45,120,.6); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 44px -12px rgba(255,45,120,.7); }
-  .btn-ghost { background: var(--card); color: var(--txt); border: 1px solid var(--line); }
-  .btn-ghost:hover { background: var(--card-hover); transform: translateY(-2px); }
+  /* ====== MASTHEAD ====== */
+  .masthead{border-bottom:2px solid var(--rule);}
+  .mast-top{display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;}
+  .mast-top .c{color:var(--pink);}
+  @media(max-width:640px){.mast-top{font-size:10px;}}
 
-  /* CONTEXT STRIP */
-  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 64px; }
-  @media (max-width: 760px){ .strip { grid-template-columns: repeat(2,1fr); } }
-  .stat {
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 24px 22px; text-align: left; position: relative; overflow: hidden;
-  }
-  .stat::before { content:""; position:absolute; top:0; left:0; width:3px; height:100%; background: var(--grad); opacity:.8; }
-  .stat .num { font-family: 'Sora'; font-weight: 800; font-size: clamp(26px, 4vw, 36px); }
-  .stat .lbl { color: var(--txt-soft); font-size: 13.5px; margin-top: 6px; }
+  .cover{padding:52px 0 0;position:relative;}
+  .issue{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:26px;display:flex;align-items:center;gap:14px;}
+  .issue::before{content:"";width:40px;height:2px;background:var(--pink);display:inline-block;}
+  h1.title{font-family:'Fraunces',serif;font-weight:540;font-size:clamp(46px,10.5vw,148px);line-height:.92;letter-spacing:-.03em;}
+  h1.title em{font-weight:500;color:var(--pink);}
+  .dek{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;margin:42px 0 0;padding:32px 0;border-top:1px solid var(--rule);align-items:start;}
+  @media(max-width:760px){.dek{grid-template-columns:1fr;gap:22px;}}
+  .dek .lead{font-size:clamp(19px,2.4vw,25px);line-height:1.4;color:var(--ink);max-width:38ch;}
+  .dek .lead .drop{float:left;font-family:'Fraunces',serif;font-weight:600;font-size:5.2em;line-height:.72;padding:8px 12px 0 0;color:var(--pink);}
+  .dek .byline{font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.9;color:var(--ink-soft);letter-spacing:.02em;}
+  .dek .byline b{color:var(--ink);}
 
-  /* SECTION TITLES */
-  .section { padding: 70px 0 10px; }
-  .sec-head { max-width: 720px; margin-bottom: 44px; }
-  .sec-kicker { color: var(--cyan); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
-  .sec-head h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 700; margin-top: 12px; }
-  .sec-head p { color: var(--txt-soft); margin-top: 14px; font-size: 17px; }
+  /* ====== TICKER ====== */
+  .ticker{border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;}
+  .ticker .run{display:inline-block;padding:13px 0;font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.08em;text-transform:uppercase;animation:scroll 34s linear infinite;}
+  .ticker .run span{padding:0 26px;}
+  .ticker .run b{color:var(--pink);}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-  /* CHALLENGE CARDS */
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-  @media (max-width: 900px){ .cards { grid-template-columns: 1fr; } }
-  .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 30px 28px; position: relative; transition: transform .3s, border-color .3s, background .3s;
-    opacity: 0; transform: translateY(26px);
-  }
-  .card.in { opacity: 1; transform: translateY(0); }
-  .card:hover { transform: translateY(-6px); border-color: rgba(123,92,255,.45); background: var(--card-hover); }
-  .card .idx {
-    font-family: 'Sora'; font-weight: 800; font-size: 15px; width: 42px; height: 42px;
-    display: grid; place-items: center; border-radius: 12px; margin-bottom: 22px;
-    background: rgba(123,92,255,.13); color: var(--violet); border: 1px solid rgba(123,92,255,.3);
-  }
-  .card h3 { font-size: 21px; font-weight: 700; }
-  .card .role { color: var(--txt-dim); font-size: 13.5px; margin: 6px 0 18px; font-style: italic; }
-  .card ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
-  .card li { position: relative; padding-left: 24px; color: var(--txt-soft); font-size: 14.5px; }
-  .card li::before { content:""; position:absolute; left:0; top:9px; width:9px; height:9px; border-radius:3px; background: var(--grad); }
-  .card li b { color: var(--txt); font-weight: 600; }
-  .card .metric {
-    margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line);
-    display: flex; align-items: baseline; gap: 10px;
-  }
-  .card .metric .big { font-family:'Sora'; font-weight:800; font-size: 30px; }
-  .c1 .big { color: var(--pink-soft);} .c2 .big { color: var(--cyan);} .c3 .big { color: var(--green);}
-  .card .metric .cap { color: var(--txt-dim); font-size: 13px; }
+  /* ====== SECTION SCAFFOLD ====== */
+  section{padding:84px 0;}
+  .sec-label{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);display:flex;justify-content:space-between;border-bottom:1px solid var(--rule);padding-bottom:12px;margin-bottom:48px;}
+  .sec-label .n{color:var(--pink);}
+  .sec-head{font-family:'Fraunces',serif;font-weight:560;font-size:clamp(32px,5.5vw,62px);line-height:1;letter-spacing:-.025em;max-width:18ch;margin-bottom:14px;}
+  .sec-intro{font-size:19px;max-width:60ch;color:var(--ink-soft);}
+  .sec-intro em{color:var(--ink);}
 
-  /* TIMELINE */
-  .timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 20px; position: relative; }
-  @media (max-width: 760px){ .timeline { grid-template-columns: 1fr 1fr; gap: 26px 0; } }
-  .tl {
-    position: relative; padding: 28px 22px; text-align: center;
-    border-right: 1px solid var(--line);
-  }
-  .timeline .tl:last-child { border-right: none; }
-  @media (max-width: 760px){ .tl { border-right: none; } }
-  .tl .yr { font-family:'Sora'; font-weight:800; font-size: 18px; color: var(--violet); }
-  .tl .val { font-family:'Sora'; font-weight:800; font-size: clamp(30px,5vw,46px); margin: 8px 0 4px; }
-  .tl .val .g { background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .tl .desc { color: var(--txt-soft); font-size: 13.5px; }
-  .tl-wrap { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  /* ====== TROIS LEVIERS ====== */
+  .levers{margin-top:60px;display:flex;flex-direction:column;}
+  .lever{display:grid;grid-template-columns:auto 1fr 1.05fr;gap:40px;padding:46px 0;border-top:2px solid var(--rule);position:relative;align-items:start;}
+  .lever:last-child{border-bottom:2px solid var(--rule);}
+  @media(max-width:860px){.lever{grid-template-columns:1fr;gap:20px;}}
+  .lever .num{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(64px,9vw,120px);line-height:.8;color:var(--ink);transition:color .4s,transform .4s;}
+  .lever:hover .num{color:var(--pink);transform:translateX(6px);}
+  .lever .head h3{font-family:'Fraunces',serif;font-weight:560;font-size:clamp(26px,3.4vw,38px);line-height:1.02;letter-spacing:-.02em;}
+  .lever .head .role{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.04em;color:var(--pink);margin-top:14px;text-transform:uppercase;line-height:1.6;}
+  .lever ul{list-style:none;display:flex;flex-direction:column;gap:15px;}
+  .lever li{position:relative;padding-left:26px;font-size:17px;line-height:1.5;color:var(--ink-soft);}
+  .lever li::before{content:"→";position:absolute;left:0;top:0;color:var(--pink);font-family:'IBM Plex Mono',monospace;}
+  .lever li b{color:var(--ink);font-weight:600;font-style:italic;}
+  .lever .stat{margin-top:24px;display:flex;align-items:baseline;gap:14px;border-top:1px dashed var(--ink-dim);padding-top:18px;}
+  .lever .stat .big{font-family:'Fraunces',serif;font-weight:600;font-size:46px;line-height:1;color:var(--pink);}
+  .lever .stat .cap{font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);max-width:24ch;line-height:1.5;}
 
-  /* HOW / STACK */
-  .stack { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items: stretch; }
-  @media (max-width: 900px){ .stack { grid-template-columns: 1fr; } }
-  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 30px; }
-  .panel h3 { font-size: 22px; margin-bottom: 8px; }
-  .panel p.lead { color: var(--txt-soft); font-size: 15px; margin-bottom: 22px; }
-  .flow { display: flex; flex-direction: column; gap: 12px; }
-  .flow .step { display: flex; align-items: center; gap: 14px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-  .flow .step .ic { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; font-size: 18px; flex-shrink: 0; }
-  .flow .step b { display:block; font-size: 14.5px; color: var(--txt); }
-  .flow .step span { font-size: 13px; color: var(--txt-dim); }
-  .arrow { text-align: center; color: var(--violet); font-size: 13px; line-height: .4; }
-  .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
-  .chip { font-size: 12.5px; color: var(--txt-soft); background: var(--bg-soft); border: 1px solid var(--line); padding: 7px 13px; border-radius: 999px; }
-  .chip b { color: var(--cyan); }
+  /* ====== TIMELINE ====== */
+  .frieze{margin-top:54px;border:2px solid var(--rule);background:var(--paper-2);}
+  .frieze-grid{display:grid;grid-template-columns:repeat(4,1fr);}
+  @media(max-width:760px){.frieze-grid{grid-template-columns:1fr 1fr;}}
+  .tk{padding:34px 28px;border-right:1px solid var(--rule);position:relative;}
+  .tk:nth-child(4n),.frieze-grid .tk:last-child{border-right:none;}
+  @media(max-width:760px){.tk:nth-child(2n){border-right:none;}.tk:nth-child(-n+2){border-bottom:1px solid var(--rule);}}
+  .tk .yr{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase;}
+  .tk .v{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(40px,6vw,66px);line-height:.9;margin:14px 0 10px;}
+  .tk:hover .v{color:var(--pink);}
+  .tk .d{font-size:15px;color:var(--ink-soft);line-height:1.4;}
 
-  /* QUOTE */
-  .quote { margin-top: 26px; background: linear-gradient(135deg, rgba(123,92,255,.1), rgba(25,211,224,.05)); border: 1px solid rgba(123,92,255,.3); border-radius: var(--radius); padding: 34px 32px; }
-  .quote p { font-family: 'Sora'; font-weight: 600; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; }
-  .quote .who { margin-top: 16px; color: var(--txt-soft); font-size: 14px; }
-  .quote .who b { color: var(--txt); }
+  /* ====== PIPELINE / STACK ====== */
+  .duo{margin-top:54px;display:grid;grid-template-columns:1.15fr .85fr;gap:0;border:2px solid var(--rule);}
+  @media(max-width:860px){.duo{grid-template-columns:1fr;}}
+  .duo .col{padding:40px 38px;}
+  .duo .col.left{border-right:2px solid var(--rule);}
+  @media(max-width:860px){.duo .col.left{border-right:none;border-bottom:2px solid var(--rule);}}
+  .col h4{font-family:'Fraunces',serif;font-weight:560;font-size:25px;margin-bottom:8px;}
+  .col p.note{color:var(--ink-soft);font-size:16px;margin-bottom:26px;max-width:42ch;}
+  .pipe{display:flex;flex-direction:column;}
+  .pipe .node{padding:18px 0;border-top:1px solid var(--ink-dim);}
+  .pipe .node:first-child{border-top:none;}
+  .pipe .node .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);}
+  .pipe .node .t{font-family:'Fraunces',serif;font-weight:560;font-size:21px;margin:5px 0 3px;}
+  .pipe .node .s{font-size:14.5px;color:var(--ink-soft);}
+  .lake{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--ink-dim);}
+  .lake .row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--ink-dim);font-family:'IBM Plex Mono',monospace;font-size:13.5px;}
+  .lake .row .idx{color:var(--pink);}
+  .lake .row b{font-weight:500;}
 
-  /* TAKEAWAY */
-  .takeaway { margin-top: 24px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px 34px; }
-  .takeaway h3 { font-size: 22px; margin-bottom: 14px; }
-  .takeaway p { color: var(--txt-soft); font-size: 16px; }
-  .takeaway p b { color: var(--txt); }
+  /* ====== QUOTE ====== */
+  .pull{padding:96px 0;border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);background:var(--ink);color:var(--paper);position:relative;}
+  .pull .mark{font-family:'Fraunces',serif;font-size:clamp(120px,20vw,240px);line-height:.5;color:var(--pink);height:.45em;display:block;}
+  .pull blockquote{font-family:'Fraunces',serif;font-weight:400;font-style:italic;font-size:clamp(28px,5vw,58px);line-height:1.08;letter-spacing:-.02em;max-width:20ch;margin:30px 0 0;}
+  .pull .attr{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-top:36px;color:var(--paper);}
+  .pull .attr b{color:var(--pink);}
 
-  /* SOURCES / FOOTER */
-  footer { padding: 60px 0 50px; margin-top: 70px; border-top: 1px solid var(--line); }
-  footer h4 { font-family:'Sora'; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: var(--txt-dim); margin-bottom: 18px; }
-  .src { display: flex; flex-direction: column; gap: 10px; }
-  .src a { color: var(--txt-soft); text-decoration: none; font-size: 14px; transition: color .2s; }
-  .src a:hover { color: var(--cyan); }
-  .foot-note { margin-top: 34px; color: var(--txt-dim); font-size: 13px; }
+  /* ====== TAKEAWAY ====== */
+  .takeaway{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:start;}
+  @media(max-width:760px){.takeaway{grid-template-columns:1fr;gap:18px;}}
+  .takeaway .key{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(70px,12vw,150px);line-height:.8;color:var(--pink);}
+  .takeaway .body p{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(22px,3.4vw,38px);line-height:1.18;letter-spacing:-.015em;max-width:24ch;}
+  .takeaway .body p b{color:var(--pink);font-weight:560;}
 
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
+  /* ====== COLOPHON ====== */
+  footer{border-top:2px solid var(--rule);padding:60px 0 70px;}
+  .colo{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;}
+  @media(max-width:760px){.colo{grid-template-columns:1fr;gap:30px;}}
+  .colo h5{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:20px;}
+  .src{display:flex;flex-direction:column;}
+  .src a{display:flex;gap:16px;padding:15px 0;border-top:1px solid var(--ink-dim);color:var(--ink);text-decoration:none;font-size:16px;line-height:1.35;transition:color .25s,padding-left .25s;}
+  .src a:last-child{border-bottom:1px solid var(--ink-dim);}
+  .src a .no{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--pink);padding-top:3px;flex-shrink:0;}
+  .src a:hover{color:var(--pink);padding-left:8px;}
+  .sign{font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.9;color:var(--ink-soft);letter-spacing:.02em;}
+  .sign b{color:var(--ink);}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);}
+  .rv.in{opacity:1;transform:none;}
 </style>
 </head>
 <body>
-<div class="glow"></div>
 
-<nav>
-  <div class="wrap nav-in">
-    <div class="brand"><span class="dot"></span> Cas Veepee · IA</div>
-    <div class="nav-links">
-      <a href="#defis">Les 3 défis</a>
-      <a href="#resultats">Résultats</a>
-      <a href="#comment">Comment ça marche</a>
-      <a href="#cle">À retenir</a>
+<div class="masthead">
+  <div class="wrap mast-top">
+    <span>Veepee <span class="c">×</span> Intelligence Artificielle</span>
+    <span>Dossier Data</span>
+    <span>Juin 2026</span>
+  </div>
+</div>
+
+<!-- ====== COVER ====== -->
+<div class="wrap cover">
+  <div class="issue">Cas N°01 · Mise en situation</div>
+  <h1 class="title">La vente flash,<br /><em>augmentée</em> par<br />l'IA.</h1>
+  <div class="dek">
+    <p class="lead"><span class="drop">V</span>eepee, leader européen des ventes événementielles, mobilise plusieurs intelligences artificielles pour transformer ses opérations. Trois leviers, un même socle de données, une décennie de patience.</p>
+    <div class="byline">
+      RÉDACTION&nbsp;&nbsp;Dossier pédagogique<br />
+      SUJET&nbsp;&nbsp;<b>L'IA appliquée au e-commerce</b><br />
+      TERRAIN&nbsp;&nbsp;Ventes flash, 5 jours, stocks négociés<br />
+      ENJEU&nbsp;&nbsp;Personnaliser, prédire, optimiser
     </div>
   </div>
-</nav>
+</div>
 
-<header>
+<!-- ====== TICKER ====== -->
+<div class="ticker">
+  <div class="run">
+    <span><b>2 000 000</b> visiteurs / jour</span><span>·</span>
+    <span><b>~250</b> offres mises en ligne / jour</span><span>·</span>
+    <span><b>50 ms</b> pour classer les offres</span><span>·</span>
+    <span><b>+15 %</b> de conversion gagnés</span><span>·</span>
+    <span><b>99 %</b> du trafic couvert</span><span>·</span>
+    <span><b>28</b> variantes testées</span><span>·</span>
+    <span><b>2 000 000</b> visiteurs / jour</span><span>·</span>
+    <span><b>~250</b> offres mises en ligne / jour</span><span>·</span>
+    <span><b>50 ms</b> pour classer les offres</span><span>·</span>
+    <span><b>+15 %</b> de conversion gagnés</span><span>·</span>
+    <span><b>99 %</b> du trafic couvert</span><span>·</span>
+    <span><b>28</b> variantes testées</span><span>·</span>
+  </div>
+</div>
+
+<!-- ====== TROIS LEVIERS ====== -->
+<section>
   <div class="wrap">
-    <span class="tag"><span class="pulse"></span> Mise en situation · Intelligence artificielle</span>
-    <h1>Comment l'IA transforme<br /><span class="grad">les ventes événementielles</span> de Veepee</h1>
-    <p class="sub">Leader européen des ventes flash, Veepee mobilise plusieurs types d'IA pour personnaliser ses campagnes, prédire la demande et optimiser ses ventes en temps réel. Décryptage d'une démarche data patiente.</p>
-    <div class="hero-cta">
-      <a href="#defis" class="btn btn-primary">Découvrir les 3 défis →</a>
-      <a href="#comment" class="btn btn-ghost">Comprendre l'architecture</a>
-    </div>
+    <div class="sec-label rv"><span><span class="n">01</span> / Les trois leviers</span><span>L'IA face aux défis de Veepee</span></div>
+    <h2 class="sec-head display rv">Trois tensions, une réponse algorithmique.</h2>
+    <p class="sec-intro rv">Le modèle « flash » crée trois frictions structurelles : <em>trop d'offres</em> pour un tri humain, des stocks <em>achetés à l'avance</em> qu'il faut écouler vite, et une fenêtre de vente <em>très courte</em> où chaque visite compte double.</p>
 
-    <div class="strip">
-      <div class="stat"><div class="num">2 M</div><div class="lbl">visiteurs uniques par jour</div></div>
-      <div class="stat"><div class="num">~250</div><div class="lbl">nouvelles offres mises en ligne / jour</div></div>
-      <div class="stat"><div class="num">50 ms</div><div class="lbl">pour classer les offres au chargement</div></div>
-      <div class="stat"><div class="num">+15 %</div><div class="lbl">de taux de conversion gagné</div></div>
+    <div class="levers">
+      <article class="lever rv">
+        <div class="num display">01</div>
+        <div class="head">
+          <h3>Personnaliser ses campagnes</h3>
+          <div class="role">Adapter offres et communications à chaque profil</div>
+        </div>
+        <div>
+          <ul>
+            <li>Un <b>moteur de recommandation hybride</b> (2018) calcule un score d'affinité entre chaque client et chaque offre.</li>
+            <li>Il réordonne les ~250 ventes du jour selon la <b>probabilité d'achat</b> de l'individu.</li>
+            <li>Le même deep learning personnalise la <b>page d'accueil et les emails</b> de chaque visiteur.</li>
+          </ul>
+          <div class="stat"><span class="big">100 %</span><span class="cap">des pages et emails personnalisés par profil</span></div>
+        </div>
+      </article>
+
+      <article class="lever rv">
+        <div class="num display">02</div>
+        <div class="head">
+          <h3>Prédire la demande</h3>
+          <div class="role">Anticiper les volumes pour optimiser les stocks</div>
+        </div>
+        <div>
+          <ul>
+            <li>La Data Science <b>prévoit le nombre d'unités vendues</b> par offre (sales forecasting).</li>
+            <li>Objectif : éviter la <b>rupture</b>, ventes perdues, autant que le <b>surstock</b>, invendus à liquider.</li>
+            <li>Ces prévisions pilotent directement <b>sourcing, opérations et logistique</b>.</li>
+          </ul>
+          <div class="stat"><span class="big">20 à 50 %</span><span class="cap">d'erreur de prévision en moins, référence McKinsey</span></div>
+        </div>
+      </article>
+
+      <article class="lever rv">
+        <div class="num display">03</div>
+        <div class="head">
+          <h3>Optimiser ses ventes</h3>
+          <div class="role">Ajuster prix et mises en avant en temps réel</div>
+        </div>
+        <div>
+          <ul>
+            <li>Le moteur place <b>la bonne offre devant le bon client</b> à chaque chargement de page.</li>
+            <li>Une équipe <b>Data Scientist Pricing</b> développe un algorithme de recommandation de prix.</li>
+            <li>Sa cible : <b>optimiser la marge par visiteur</b> via du machine learning et de la prévision.</li>
+          </ul>
+          <div class="stat"><span class="big">+15 %</span><span class="cap">de conversion, sur 99 % du trafic</span></div>
+        </div>
+      </article>
     </div>
   </div>
-</header>
+</section>
 
-<section class="section" id="defis">
+<!-- ====== TIMELINE ====== -->
+<section style="padding-top:20px;">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-kicker">Mise en situation</div>
-      <h2>Trois défis, une réponse par l'IA</h2>
-      <p>Le modèle « flash » de Veepee crée trois tensions : trop d'offres pour un tri humain, des stocks négociés à l'avance qu'il faut écouler vite, et une fenêtre de vente très courte où chaque visite compte.</p>
-    </div>
+    <div class="sec-label rv"><span><span class="n">02</span> / La démarche patiente</span><span>3,5 ans · 28 variantes</span></div>
+    <h2 class="sec-head display rv">« Qui va lentement va sûrement. »</h2>
+    <p class="sec-intro rv">Le gain de conversion ne s'est pas décrété : il s'est construit version après version, en élargissant prudemment la part du trafic exposée à l'algorithme.</p>
 
-    <div class="cards">
-      <div class="card c1">
-        <div class="idx">01</div>
-        <h3>Personnaliser ses campagnes</h3>
-        <div class="role">Adapter les offres et communications à chaque profil client</div>
-        <ul>
-          <li>Un <b>moteur de recommandation hybride</b> (2018) calcule un <b>score d'affinité</b> entre chaque client et chaque offre.</li>
-          <li>Il réordonne les ~250 ventes du jour selon la <b>probabilité d'achat</b> de l'individu.</li>
-          <li>Le même <b>deep learning</b> personnalise la <b>page d'accueil et les emails</b> de chaque profil.</li>
-        </ul>
-        <div class="metric"><span class="big">100 %</span><span class="cap">des pages et emails personnalisés</span></div>
-      </div>
-
-      <div class="card c2">
-        <div class="idx">02</div>
-        <h3>Prédire la demande</h3>
-        <div class="role">Anticiper les volumes de vente pour optimiser les stocks</div>
-        <ul>
-          <li>La Data Science <b>prédit le nombre d'unités vendues</b> par offre (sales forecasting).</li>
-          <li>Objectif : éviter la <b>rupture</b> (ventes perdues) comme le <b>surstock</b> (invendus à liquider).</li>
-          <li>Ces prévisions pilotent directement les équipes <b>sourcing, opérations et logistique</b>.</li>
-        </ul>
-        <div class="metric"><span class="big">20–50 %</span><span class="cap">d'erreur de prévision en moins (réf. McKinsey)</span></div>
-      </div>
-
-      <div class="card c3">
-        <div class="idx">03</div>
-        <h3>Optimiser ses ventes</h3>
-        <div class="role">Ajuster les prix et les mises en avant en temps réel</div>
-        <ul>
-          <li>Le moteur de reco place <b>la bonne offre devant le bon client</b> à chaque visite.</li>
-          <li>Une équipe <b>Data Scientist Pricing</b> développe un algorithme de recommandation de prix.</li>
-          <li>Son but : <b>optimiser la marge par visiteur</b> via du ML et de la prévision de ventes.</li>
-        </ul>
-        <div class="metric"><span class="big">+15 %</span><span class="cap">de conversion sur 99 % du trafic</span></div>
+    <div class="frieze rv">
+      <div class="frieze-grid">
+        <div class="tk"><div class="yr">2018</div><div class="v display">+3 %</div><div class="d">Version 1 du moteur. 5 % du trafic couvert.</div></div>
+        <div class="tk"><div class="yr">2019 → 2020</div><div class="v display">↗</div><div class="d">Itérations successives, montée en charge progressive.</div></div>
+        <div class="tk"><div class="yr">Juin 2021</div><div class="v display">+15 %</div><div class="d">Version 12. Gain de conversion maximal atteint.</div></div>
+        <div class="tk"><div class="yr">2021</div><div class="v display">99 %</div><div class="d">du trafic couvert par la personnalisation.</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="resultats">
+<!-- ====== PIPELINE + DATA LAKE ====== -->
+<section style="padding-top:20px;">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-kicker">3,5 ans d'itérations · 28 variantes testées</div>
-      <h2>La démarche patiente, en chiffres</h2>
-      <p>« Qui va lentement va sûrement. » Le gain de conversion ne s'est pas fait d'un coup : il s'est construit version après version, en élargissant progressivement la couverture du trafic.</p>
-    </div>
+    <div class="sec-label rv"><span><span class="n">03</span> / Sous le capot</span><span>Deep learning + ML prédictif</span></div>
+    <h2 class="sec-head display rv">Un seul socle, plusieurs intelligences.</h2>
+    <p class="sec-intro rv">Toute la donnée converge dans un <em>Data Lake</em> centralisé. Cinq pôles l'exploitent pour irriguer la reco, la personnalisation, la prévision et le pricing.</p>
 
-    <div class="tl-wrap reveal">
-      <div class="timeline">
-        <div class="tl">
-          <div class="yr">2018</div>
-          <div class="val"><span class="g">+3 %</span></div>
-          <div class="desc">Version 1 du moteur · 5 % du trafic couvert</div>
-        </div>
-        <div class="tl">
-          <div class="yr">2019–20</div>
-          <div class="val"><span class="g">↗</span></div>
-          <div class="desc">Itérations successives · montée en charge progressive</div>
-        </div>
-        <div class="tl">
-          <div class="yr">Juin 2021</div>
-          <div class="val"><span class="g">+15 %</span></div>
-          <div class="desc">Version 12 · gain de conversion maximal</div>
-        </div>
-        <div class="tl">
-          <div class="yr">2021</div>
-          <div class="val"><span class="g">99 %</span></div>
-          <div class="desc">du trafic couvert par la personnalisation</div>
+    <div class="duo rv">
+      <div class="col left">
+        <h4>Le pipeline de recommandation</h4>
+        <p class="note">Un réseau de neurones siamois, entraîné en <i>pairwise loss</i>, compare deux offres pour prédire la préférée. Le tout en 50 ms, pendant le chargement.</p>
+        <div class="pipe">
+          <div class="node"><div class="k">Entrée</div><div class="t display">Données contextuelles</div><div class="s">Profil client, historique, météo, horaire, performance commerciale.</div></div>
+          <div class="node"><div class="k">Modèle</div><div class="t display">Réseau siamois · pairwise loss</div><div class="s">Calcul des scores d'affinité client × offre.</div></div>
+          <div class="node"><div class="k">Calcul</div><div class="t display">Classement en 50 ms</div><div class="s">Les ~250 offres réordonnées par probabilité d'achat.</div></div>
+          <div class="node"><div class="k">Sortie</div><div class="t display">Affichage personnalisé</div><div class="s">Page d'accueil et emails adaptés à chaque visiteur.</div></div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="comment">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="sec-kicker">Sous le capot</div>
-      <h2>Comment fonctionne le moteur</h2>
-      <p>Un même socle data alimente des modèles de deep learning (reco, personnalisation) et de machine learning prédictif (demande, pricing).</p>
-    </div>
-
-    <div class="stack">
-      <div class="panel reveal">
-        <h3>Le pipeline de recommandation</h3>
-        <p class="lead">Un réseau de neurones siamois, entraîné en <i>pairwise loss</i>, compare deux offres pour prédire celle que l'utilisateur préférera — le tout en 50 ms au chargement de la page.</p>
-        <div class="flow">
-          <div class="step"><div class="ic" style="background:rgba(255,45,120,.15)">🗂️</div><div><b>Données d'entrée</b><span>profil client, historique, contexte (météo, horaire), perf commerciale</span></div></div>
-          <div class="arrow">▼</div>
-          <div class="step"><div class="ic" style="background:rgba(123,92,255,.15)">🧠</div><div><b>Réseau de neurones siamois</b><span>pairwise loss · calcul des scores d'affinité</span></div></div>
-          <div class="arrow">▼</div>
-          <div class="step"><div class="ic" style="background:rgba(25,211,224,.15)">⚡</div><div><b>Classement en 50 ms</b><span>réordonne les ~250 offres du jour par probabilité d'achat</span></div></div>
-          <div class="arrow">▼</div>
-          <div class="step"><div class="ic" style="background:rgba(46,230,166,.15)">🎯</div><div><b>Affichage personnalisé</b><span>page d'accueil + emails adaptés à chaque visiteur</span></div></div>
-        </div>
-      </div>
-
-      <div class="panel reveal">
-        <h3>Le socle data</h3>
-        <p class="lead">Toute la donnée converge dans un <b>Data Lake</b> centralisé, exploité par cinq pôles spécialisés qui irriguent l'ensemble de l'entreprise.</p>
-        <div class="chips">
-          <span class="chip"><b>Data</b> Governance</span>
-          <span class="chip"><b>Data</b> Engineering</span>
-          <span class="chip"><b>Business</b> Intelligence</span>
-          <span class="chip"><b>Data</b> Analytics</span>
-          <span class="chip"><b>Data</b> Science</span>
-        </div>
-        <div class="quote">
-          <p>« Le premier challenge que connaît tout data scientist, c'est de disposer de la donnée, de bonne qualité et fraîche. »</p>
-          <div class="who"><b>Amine Zghal</b> · Senior Data Scientist, Veepee</div>
+      <div class="col">
+        <h4>Le socle data</h4>
+        <p class="note">Cinq pôles spécialisés, une source unique de vérité partagée à toute l'entreprise.</p>
+        <div class="lake">
+          <div class="row"><span><span class="idx">01</span> &nbsp; <b>Data Governance</b></span><span>qualité · conformité</span></div>
+          <div class="row"><span><span class="idx">02</span> &nbsp; <b>Data Engineering</b></span><span>infrastructure</span></div>
+          <div class="row"><span><span class="idx">03</span> &nbsp; <b>Business Intelligence</b></span><span>KPI</span></div>
+          <div class="row"><span><span class="idx">04</span> &nbsp; <b>Data Analytics</b></span><span>patterns</span></div>
+          <div class="row"><span><span class="idx">05</span> &nbsp; <b>Data Science</b></span><span>modèles prédictifs</span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="cle">
+<!-- ====== QUOTE ====== -->
+<div class="pull">
   <div class="wrap">
-    <div class="takeaway reveal">
-      <h3>🔑 Le fil rouge à retenir</h3>
-      <p>Les trois axes ne sont pas trois IA séparées, mais <b>un même socle data</b>. Le vrai enseignement du cas Veepee est aussi <b>organisationnel</b> : le plus dur n'était pas l'algorithme, mais d'avoir une donnée fraîche et de qualité, et de <b>gagner la confiance des équipes métier</b> face à une « boîte noire » algorithmique. La performance vient autant de la culture data que de la technologie.</p>
+    <span class="mark">“</span>
+    <blockquote>Le premier challenge d'un data scientist, c'est de disposer de la donnée, de bonne qualité et fraîche.</blockquote>
+    <div class="attr"><b>Amine Zghal</b> · Senior Data Scientist, Veepee</div>
+  </div>
+</div>
+
+<!-- ====== TAKEAWAY ====== -->
+<section>
+  <div class="wrap">
+    <div class="sec-label rv"><span><span class="n">04</span> / À retenir</span><span>Le fil rouge</span></div>
+    <div class="takeaway rv">
+      <div class="key display">¶</div>
+      <div class="body">
+        <p>Trois leviers, mais une seule IA : <b>un même socle data</b>. Et la vraie leçon est <b>organisationnelle</b>. Le plus dur n'était pas l'algorithme, mais d'obtenir une donnée fraîche et fiable, puis de <b>gagner la confiance des équipes métier</b> face à la boîte noire.</p>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ====== COLOPHON ====== -->
 <footer>
-  <div class="wrap">
-    <h4>Sources</h4>
-    <div class="src">
-      <a href="https://www.alliancy.fr/veepee-booste-taux-conversion-grace-ia" target="_blank" rel="noopener">Veepee booste son taux de conversion de 15 % grâce à l'IA — Alliancy</a>
-      <a href="https://www.telecom-paris.fr/veepee-convergence-donnees-entreprise-data-driven" target="_blank" rel="noopener">Veepee : la convergence des données au cœur d'une entreprise « data driven » — Télécom Paris</a>
-      <a href="https://www.larevuedudigital.com/la-demarche-patiente-de-veepee-pour-ameliorer-ses-ventes-grace-a-lia/" target="_blank" rel="noopener">La démarche patiente de Veepee pour améliorer ses ventes grâce à l'IA — La Revue du Digital</a>
-      <a href="https://www.ibm.com/think/topics/ai-demand-forecasting" target="_blank" rel="noopener">Qu'est-ce que la prévision de la demande par l'IA ? — IBM</a>
+  <div class="wrap colo">
+    <div>
+      <h5>Colophon</h5>
+      <p class="sign">
+        <b>Cas Veepee</b><br />
+        Dossier pédagogique data<br />
+        Mise en situation IA · e-commerce<br /><br />
+        Composé en <b>Fraunces</b>, <b>Newsreader</b><br />
+        et <b>IBM Plex Mono</b>.<br />
+        Juin 2026.
+      </p>
     </div>
-    <p class="foot-note">Support pédagogique · Cas d'étude Veepee · Réalisé pour une mise en situation sur l'intelligence artificielle appliquée au e-commerce.</p>
+    <div>
+      <h5>Sources</h5>
+      <div class="src">
+        <a href="https://www.alliancy.fr/veepee-booste-taux-conversion-grace-ia" target="_blank" rel="noopener"><span class="no">[01]</span><span>Veepee booste son taux de conversion de 15 % grâce à l'IA · Alliancy</span></a>
+        <a href="https://www.telecom-paris.fr/veepee-convergence-donnees-entreprise-data-driven" target="_blank" rel="noopener"><span class="no">[02]</span><span>La convergence des données au cœur d'une entreprise « data driven » · Télécom Paris</span></a>
+        <a href="https://www.larevuedudigital.com/la-demarche-patiente-de-veepee-pour-ameliorer-ses-ventes-grace-a-lia/" target="_blank" rel="noopener"><span class="no">[03]</span><span>La démarche patiente de Veepee pour améliorer ses ventes grâce à l'IA · La Revue du Digital</span></a>
+        <a href="https://www.ibm.com/think/topics/ai-demand-forecasting" target="_blank" rel="noopener"><span class="no">[04]</span><span>Qu'est-ce que la prévision de la demande par l'IA ? · IBM</span></a>
+      </div>
+    </div>
   </div>
 </footer>
 
 <script>
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('in'), (e.target.dataset.delay||0));
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: .15 });
-  document.querySelectorAll('.reveal, .card').forEach((el, i) => {
-    if (el.classList.contains('card')) el.dataset.delay = i % 3 * 120;
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.rv').forEach((el,i)=>{
+    el.style.transitionDelay=(i%3*90)+'ms';
     io.observe(el);
   });
 </script>
