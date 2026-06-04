@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Cas Veepee : comment l'intelligence artificielle répond aux défis d'une plateforme de ventes événementielles. Personnalisation, prédiction de la demande, optimisation des ventes." />
+<title>Cas Veepee · L'IA au service des ventes événementielles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-soft: #0f1524;
+    --card: #131a2c;
+    --card-hover: #18213a;
+    --line: #1e2841;
+    --txt: #eef2fb;
+    --txt-soft: #9aa6c4;
+    --txt-dim: #6b7799;
+    --pink: #ff2d78;
+    --pink-soft: #ff6aa3;
+    --violet: #7b5cff;
+    --cyan: #19d3e0;
+    --green: #2ee6a6;
+    --amber: #ffb020;
+    --grad: linear-gradient(120deg, #ff2d78 0%, #7b5cff 55%, #19d3e0 100%);
+    --radius: 20px;
+    --shadow: 0 24px 60px -20px rgba(0,0,0,.7);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(700px 500px at 12% -5%, rgba(255,45,120,.18), transparent 60%),
+      radial-gradient(800px 600px at 90% 8%, rgba(123,92,255,.16), transparent 60%),
+      radial-gradient(700px 700px at 60% 100%, rgba(25,211,224,.10), transparent 60%);
+  }
+  .wrap { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3 { font-family: 'Sora', sans-serif; line-height: 1.12; letter-spacing: -.02em; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(10,14,26,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: 'Sora'; font-weight: 700; font-size: 17px; }
+  .brand .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 16px var(--pink); }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; }
+  .nav-links a { color: var(--txt-soft); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--txt); }
+  @media (max-width: 720px){ .nav-links { display: none; } }
+
+  /* HERO */
+  header { padding: 90px 0 60px; text-align: center; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--pink-soft);
+    border: 1px solid rgba(255,45,120,.3);
+    background: rgba(255,45,120,.07);
+    padding: 7px 16px; border-radius: 999px; margin-bottom: 28px;
+  }
+  .tag .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 0 rgba(255,45,120,.6); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%{ box-shadow: 0 0 0 0 rgba(255,45,120,.5);} 70%{ box-shadow: 0 0 0 12px rgba(255,45,120,0);} 100%{ box-shadow: 0 0 0 0 rgba(255,45,120,0);} }
+  header h1 { font-size: clamp(38px, 6vw, 68px); font-weight: 800; }
+  header h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  header p.sub { max-width: 660px; margin: 26px auto 0; color: var(--txt-soft); font-size: clamp(16px, 2vw, 19px); }
+  .hero-cta { margin-top: 40px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 14px 26px; border-radius: 12px; font-weight: 600; font-size: 15px;
+    text-decoration: none; cursor: pointer; transition: transform .2s, box-shadow .2s; border: none;
+  }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 14px 34px -12px rgba(255,45,120,.6); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 44px -12px rgba(255,45,120,.7); }
+  .btn-ghost { background: var(--card); color: var(--txt); border: 1px solid var(--line); }
+  .btn-ghost:hover { background: var(--card-hover); transform: translateY(-2px); }
+
+  /* CONTEXT STRIP */
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 64px; }
+  @media (max-width: 760px){ .strip { grid-template-columns: repeat(2,1fr); } }
+  .stat {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px 22px; text-align: left; position: relative; overflow: hidden;
+  }
+  .stat::before { content:""; position:absolute; top:0; left:0; width:3px; height:100%; background: var(--grad); opacity:.8; }
+  .stat .num { font-family: 'Sora'; font-weight: 800; font-size: clamp(26px, 4vw, 36px); }
+  .stat .lbl { color: var(--txt-soft); font-size: 13.5px; margin-top: 6px; }
+
+  /* SECTION TITLES */
+  .section { padding: 70px 0 10px; }
+  .sec-head { max-width: 720px; margin-bottom: 44px; }
+  .sec-kicker { color: var(--cyan); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+  .sec-head h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 700; margin-top: 12px; }
+  .sec-head p { color: var(--txt-soft); margin-top: 14px; font-size: 17px; }
+
+  /* CHALLENGE CARDS */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 900px){ .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 28px; position: relative; transition: transform .3s, border-color .3s, background .3s;
+    opacity: 0; transform: translateY(26px);
+  }
+  .card.in { opacity: 1; transform: translateY(0); }
+  .card:hover { transform: translateY(-6px); border-color: rgba(123,92,255,.45); background: var(--card-hover); }
+  .card .idx {
+    font-family: 'Sora'; font-weight: 800; font-size: 15px; width: 42px; height: 42px;
+    display: grid; place-items: center; border-radius: 12px; margin-bottom: 22px;
+    background: rgba(123,92,255,.13); color: var(--violet); border: 1px solid rgba(123,92,255,.3);
+  }
+  .card h3 { font-size: 21px; font-weight: 700; }
+  .card .role { color: var(--txt-dim); font-size: 13.5px; margin: 6px 0 18px; font-style: italic; }
+  .card ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+  .card li { position: relative; padding-left: 24px; color: var(--txt-soft); font-size: 14.5px; }
+  .card li::before { content:""; position:absolute; left:0; top:9px; width:9px; height:9px; border-radius:3px; background: var(--grad); }
+  .card li b { color: var(--txt); font-weight: 600; }
+  .card .metric {
+    margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .card .metric .big { font-family:'Sora'; font-weight:800; font-size: 30px; }
+  .c1 .big { color: var(--pink-soft);} .c2 .big { color: var(--cyan);} .c3 .big { color: var(--green);}
+  .card .metric .cap { color: var(--txt-dim); font-size: 13px; }
+
+  /* TIMELINE */
+  .timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 20px; position: relative; }
+  @media (max-width: 760px){ .timeline { grid-template-columns: 1fr 1fr; gap: 26px 0; } }
+  .tl {
+    position: relative; padding: 28px 22px; text-align: center;
+    border-right: 1px solid var(--line);
+  }
+  .timeline .tl:last-child { border-right: none; }
+  @media (max-width: 760px){ .tl { border-right: none; } }
+  .tl .yr { font-family:'Sora'; font-weight:800; font-size: 18px; color: var(--violet); }
+  .tl .val { font-family:'Sora'; font-weight:800; font-size: clamp(30px,5vw,46px); margin: 8px 0 4px; }
+  .tl .val .g { background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .tl .desc { color: var(--txt-soft); font-size: 13.5px; }
+  .tl-wrap { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+
+  /* HOW / STACK */
+  .stack { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items: stretch; }
+  @media (max-width: 900px){ .stack { grid-template-columns: 1fr; } }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 30px; }
+  .panel h3 { font-size: 22px; margin-bottom: 8px; }
+  .panel p.lead { color: var(--txt-soft); font-size: 15px; margin-bottom: 22px; }
+  .flow { display: flex; flex-direction: column; gap: 12px; }
+  .flow .step { display: flex; align-items: center; gap: 14px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .flow .step .ic { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; font-size: 18px; flex-shrink: 0; }
+  .flow .step b { display:block; font-size: 14.5px; color: var(--txt); }
+  .flow .step span { font-size: 13px; color: var(--txt-dim); }
+  .arrow { text-align: center; color: var(--violet); font-size: 13px; line-height: .4; }
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 8px; }
+  .chip { font-size: 12.5px; color: var(--txt-soft); background: var(--bg-soft); border: 1px solid var(--line); padding: 7px 13px; border-radius: 999px; }
+  .chip b { color: var(--cyan); }
+
+  /* QUOTE */
+  .quote { margin-top: 26px; background: linear-gradient(135deg, rgba(123,92,255,.1), rgba(25,211,224,.05)); border: 1px solid rgba(123,92,255,.3); border-radius: var(--radius); padding: 34px 32px; }
+  .quote p { font-family: 'Sora'; font-weight: 600; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; }
+  .quote .who { margin-top: 16px; color: var(--txt-soft); font-size: 14px; }
+  .quote .who b { color: var(--txt); }
+
+  /* TAKEAWAY */
+  .takeaway { margin-top: 24px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px 34px; }
+  .takeaway h3 { font-size: 22px; margin-bottom: 14px; }
+  .takeaway p { color: var(--txt-soft); font-size: 16px; }
+  .takeaway p b { color: var(--txt); }
+
+  /* SOURCES / FOOTER */
+  footer { padding: 60px 0 50px; margin-top: 70px; border-top: 1px solid var(--line); }
+  footer h4 { font-family:'Sora'; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: var(--txt-dim); margin-bottom: 18px; }
+  .src { display: flex; flex-direction: column; gap: 10px; }
+  .src a { color: var(--txt-soft); text-decoration: none; font-size: 14px; transition: color .2s; }
+  .src a:hover { color: var(--cyan); }
+  .foot-note { margin-top: 34px; color: var(--txt-dim); font-size: 13px; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand"><span class="dot"></span> Cas Veepee · IA</div>
+    <div class="nav-links">
+      <a href="#defis">Les 3 défis</a>
+      <a href="#resultats">Résultats</a>
+      <a href="#comment">Comment ça marche</a>
+      <a href="#cle">À retenir</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <span class="tag"><span class="pulse"></span> Mise en situation · Intelligence artificielle</span>
+    <h1>Comment l'IA transforme<br /><span class="grad">les ventes événementielles</span> de Veepee</h1>
+    <p class="sub">Leader européen des ventes flash, Veepee mobilise plusieurs types d'IA pour personnaliser ses campagnes, prédire la demande et optimiser ses ventes en temps réel. Décryptage d'une démarche data patiente.</p>
+    <div class="hero-cta">
+      <a href="#defis" class="btn btn-primary">Découvrir les 3 défis →</a>
+      <a href="#comment" class="btn btn-ghost">Comprendre l'architecture</a>
+    </div>
+
+    <div class="strip">
+      <div class="stat"><div class="num">2 M</div><div class="lbl">visiteurs uniques par jour</div></div>
+      <div class="stat"><div class="num">~250</div><div class="lbl">nouvelles offres mises en ligne / jour</div></div>
+      <div class="stat"><div class="num">50 ms</div><div class="lbl">pour classer les offres au chargement</div></div>
+      <div class="stat"><div class="num">+15 %</div><div class="lbl">de taux de conversion gagné</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="defis">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Mise en situation</div>
+      <h2>Trois défis, une réponse par l'IA</h2>
+      <p>Le modèle « flash » de Veepee crée trois tensions : trop d'offres pour un tri humain, des stocks négociés à l'avance qu'il faut écouler vite, et une fenêtre de vente très courte où chaque visite compte.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card c1">
+        <div class="idx">01</div>
+        <h3>Personnaliser ses campagnes</h3>
+        <div class="role">Adapter les offres et communications à chaque profil client</div>
+        <ul>
+          <li>Un <b>moteur de recommandation hybride</b> (2018) calcule un <b>score d'affinité</b> entre chaque client et chaque offre.</li>
+          <li>Il réordonne les ~250 ventes du jour selon la <b>probabilité d'achat</b> de l'individu.</li>
+          <li>Le même <b>deep learning</b> personnalise la <b>page d'accueil et les emails</b> de chaque profil.</li>
+        </ul>
+        <div class="metric"><span class="big">100 %</span><span class="cap">des pages et emails personnalisés</span></div>
+      </div>
+
+      <div class="card c2">
+        <div class="idx">02</div>
+        <h3>Prédire la demande</h3>
+        <div class="role">Anticiper les volumes de vente pour optimiser les stocks</div>
+        <ul>
+          <li>La Data Science <b>prédit le nombre d'unités vendues</b> par offre (sales forecasting).</li>
+          <li>Objectif : éviter la <b>rupture</b> (ventes perdues) comme le <b>surstock</b> (invendus à liquider).</li>
+          <li>Ces prévisions pilotent directement les équipes <b>sourcing, opérations et logistique</b>.</li>
+        </ul>
+        <div class="metric"><span class="big">20–50 %</span><span class="cap">d'erreur de prévision en moins (réf. McKinsey)</span></div>
+      </div>
+
+      <div class="card c3">
+        <div class="idx">03</div>
+        <h3>Optimiser ses ventes</h3>
+        <div class="role">Ajuster les prix et les mises en avant en temps réel</div>
+        <ul>
+          <li>Le moteur de reco place <b>la bonne offre devant le bon client</b> à chaque visite.</li>
+          <li>Une équipe <b>Data Scientist Pricing</b> développe un algorithme de recommandation de prix.</li>
+          <li>Son but : <b>optimiser la marge par visiteur</b> via du ML et de la prévision de ventes.</li>
+        </ul>
+        <div class="metric"><span class="big">+15 %</span><span class="cap">de conversion sur 99 % du trafic</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="resultats">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">3,5 ans d'itérations · 28 variantes testées</div>
+      <h2>La démarche patiente, en chiffres</h2>
+      <p>« Qui va lentement va sûrement. » Le gain de conversion ne s'est pas fait d'un coup : il s'est construit version après version, en élargissant progressivement la couverture du trafic.</p>
+    </div>
+
+    <div class="tl-wrap reveal">
+      <div class="timeline">
+        <div class="tl">
+          <div class="yr">2018</div>
+          <div class="val"><span class="g">+3 %</span></div>
+          <div class="desc">Version 1 du moteur · 5 % du trafic couvert</div>
+        </div>
+        <div class="tl">
+          <div class="yr">2019–20</div>
+          <div class="val"><span class="g">↗</span></div>
+          <div class="desc">Itérations successives · montée en charge progressive</div>
+        </div>
+        <div class="tl">
+          <div class="yr">Juin 2021</div>
+          <div class="val"><span class="g">+15 %</span></div>
+          <div class="desc">Version 12 · gain de conversion maximal</div>
+        </div>
+        <div class="tl">
+          <div class="yr">2021</div>
+          <div class="val"><span class="g">99 %</span></div>
+          <div class="desc">du trafic couvert par la personnalisation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="comment">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Sous le capot</div>
+      <h2>Comment fonctionne le moteur</h2>
+      <p>Un même socle data alimente des modèles de deep learning (reco, personnalisation) et de machine learning prédictif (demande, pricing).</p>
+    </div>
+
+    <div class="stack">
+      <div class="panel reveal">
+        <h3>Le pipeline de recommandation</h3>
+        <p class="lead">Un réseau de neurones siamois, entraîné en <i>pairwise loss</i>, compare deux offres pour prédire celle que l'utilisateur préférera — le tout en 50 ms au chargement de la page.</p>
+        <div class="flow">
+          <div class="step"><div class="ic" style="background:rgba(255,45,120,.15)">🗂️</div><div><b>Données d'entrée</b><span>profil client, historique, contexte (météo, horaire), perf commerciale</span></div></div>
+          <div class="arrow">▼</div>
+          <div class="step"><div class="ic" style="background:rgba(123,92,255,.15)">🧠</div><div><b>Réseau de neurones siamois</b><span>pairwise loss · calcul des scores d'affinité</span></div></div>
+          <div class="arrow">▼</div>
+          <div class="step"><div class="ic" style="background:rgba(25,211,224,.15)">⚡</div><div><b>Classement en 50 ms</b><span>réordonne les ~250 offres du jour par probabilité d'achat</span></div></div>
+          <div class="arrow">▼</div>
+          <div class="step"><div class="ic" style="background:rgba(46,230,166,.15)">🎯</div><div><b>Affichage personnalisé</b><span>page d'accueil + emails adaptés à chaque visiteur</span></div></div>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h3>Le socle data</h3>
+        <p class="lead">Toute la donnée converge dans un <b>Data Lake</b> centralisé, exploité par cinq pôles spécialisés qui irriguent l'ensemble de l'entreprise.</p>
+        <div class="chips">
+          <span class="chip"><b>Data</b> Governance</span>
+          <span class="chip"><b>Data</b> Engineering</span>
+          <span class="chip"><b>Business</b> Intelligence</span>
+          <span class="chip"><b>Data</b> Analytics</span>
+          <span class="chip"><b>Data</b> Science</span>
+        </div>
+        <div class="quote">
+          <p>« Le premier challenge que connaît tout data scientist, c'est de disposer de la donnée, de bonne qualité et fraîche. »</p>
+          <div class="who"><b>Amine Zghal</b> · Senior Data Scientist, Veepee</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cle">
+  <div class="wrap">
+    <div class="takeaway reveal">
+      <h3>🔑 Le fil rouge à retenir</h3>
+      <p>Les trois axes ne sont pas trois IA séparées, mais <b>un même socle data</b>. Le vrai enseignement du cas Veepee est aussi <b>organisationnel</b> : le plus dur n'était pas l'algorithme, mais d'avoir une donnée fraîche et de qualité, et de <b>gagner la confiance des équipes métier</b> face à une « boîte noire » algorithmique. La performance vient autant de la culture data que de la technologie.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>Sources</h4>
+    <div class="src">
+      <a href="https://www.alliancy.fr/veepee-booste-taux-conversion-grace-ia" target="_blank" rel="noopener">Veepee booste son taux de conversion de 15 % grâce à l'IA — Alliancy</a>
+      <a href="https://www.telecom-paris.fr/veepee-convergence-donnees-entreprise-data-driven" target="_blank" rel="noopener">Veepee : la convergence des données au cœur d'une entreprise « data driven » — Télécom Paris</a>
+      <a href="https://www.larevuedudigital.com/la-demarche-patiente-de-veepee-pour-ameliorer-ses-ventes-grace-a-lia/" target="_blank" rel="noopener">La démarche patiente de Veepee pour améliorer ses ventes grâce à l'IA — La Revue du Digital</a>
+      <a href="https://www.ibm.com/think/topics/ai-demand-forecasting" target="_blank" rel="noopener">Qu'est-ce que la prévision de la demande par l'IA ? — IBM</a>
+    </div>
+    <p class="foot-note">Support pédagogique · Cas d'étude Veepee · Réalisé pour une mise en situation sur l'intelligence artificielle appliquée au e-commerce.</p>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), (e.target.dataset.delay||0));
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: .15 });
+  document.querySelectorAll('.reveal, .card').forEach((el, i) => {
+    if (el.classList.contains('card')) el.dataset.delay = i % 3 * 120;
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
